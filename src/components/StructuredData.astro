@@ -1,0 +1,79 @@
+---
+export interface Props {
+  type: "BlogPosting" | "Person" | "WebSite";
+  data: any;
+}
+
+const { type, data } = Astro.props;
+
+let structuredData = {};
+
+if (type === "BlogPosting") {
+  structuredData = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: data.title,
+    description: data.description,
+    author: {
+      "@type": "Person",
+      name: data.author || "Iresh Ekanayaka",
+      url: "https://iresh.xyz/about",
+    },
+    datePublished: data.pubDatetime.toISOString(),
+    dateModified: data.modDatetime?.toISOString() || data.pubDatetime.toISOString(),
+    publisher: {
+      "@type": "Person",
+      name: "Iresh Ekanayaka",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://iresh.xyz/iresh-avatar.jpg",
+      },
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": data.url,
+    },
+    image: data.ogImage || "https://iresh.xyz/iresh-avatar.jpg",
+    articleSection: data.tags?.[0] || "Technology",
+    keywords: data.tags?.join(", ") || "",
+    wordCount: data.wordCount,
+    timeRequired: data.readingTime,
+  };
+} else if (type === "Person") {
+  structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: "Iresh Ekanayaka",
+    url: "https://iresh.xyz",
+    image: "https://iresh.xyz/iresh-avatar.jpg",
+    sameAs: [
+      "https://github.com/emiresh",
+      "https://twitter.com/IreshEk",
+      "https://www.linkedin.com/in/emiresh/",
+    ],
+    jobTitle: "DevOps & SRE Engineer",
+    description:
+      "DevOps & SRE Engineer passionate about Linux, cloud technologies, and automation. Sharing real-world experiences in infrastructure, monitoring, and building reliable systems.",
+  };
+} else if (type === "WebSite") {
+  structuredData = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Iresh Ekanayaka",
+    url: "https://iresh.xyz",
+    description:
+      "DevOps & SRE Engineer passionate about Linux, cloud technologies, and automation. Sharing real-world experiences in infrastructure, monitoring, and building reliable systems.",
+    author: {
+      "@type": "Person",
+      name: "Iresh Ekanayaka",
+    },
+    potentialAction: {
+      "@type": "SearchAction",
+      target: "https://iresh.xyz/search?q={search_term_string}",
+      "query-input": "required name=search_term_string",
+    },
+  };
+}
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
