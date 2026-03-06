@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 440" font-family="system-ui, -apple-system, sans-serif">
+  <defs>
+    <filter id="shadow" x="-4%" y="-4%" width="108%" height="108%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.15"/>
+    </filter>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f172a"/>
+      <stop offset="100%" style="stop-color:#1e293b"/>
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8"/>
+    </marker>
+  </defs>
+
+  <rect width="900" height="440" rx="12" fill="url(#bg)"/>
+
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" fill="#f8fafc" font-size="18" font-weight="600">Local Dev vs CI Pipeline — Same Lock File</text>
+
+  <!-- Left: Developer -->
+  <rect x="30" y="60" width="390" height="360" rx="10" fill="#172554" stroke="#3b82f6" stroke-width="2"/>
+  <text x="225" y="88" text-anchor="middle" fill="#93c5fd" font-size="15" font-weight="600">Developer (local)</text>
+
+  <rect x="55" y="105" width="340" height="40" rx="6" fill="#1e3a5f"/>
+  <text x="225" y="130" text-anchor="middle" fill="#bfdbfe" font-size="12">1. cd project/ — direnv detects .envrc</text>
+
+  <rect x="55" y="155" width="340" height="40" rx="6" fill="#1e3a5f"/>
+  <text x="225" y="180" text-anchor="middle" fill="#bfdbfe" font-size="12">2. .envrc says "use flake"</text>
+
+  <rect x="55" y="205" width="340" height="40" rx="6" fill="#1e3a5f"/>
+  <text x="225" y="230" text-anchor="middle" fill="#bfdbfe" font-size="12">3. Nix reads flake.nix + flake.lock</text>
+
+  <rect x="55" y="255" width="340" height="40" rx="6" fill="#1e3a5f"/>
+  <text x="225" y="280" text-anchor="middle" fill="#bfdbfe" font-size="12">4. Loads devShells.default</text>
+
+  <rect x="55" y="310" width="340" height="85" rx="6" fill="#1e40af"/>
+  <text x="225" y="335" text-anchor="middle" fill="#fff" font-size="13" font-weight="600">Gets: ALL tools</text>
+  <text x="225" y="355" text-anchor="middle" fill="#bfdbfe" font-size="11">terraform, tflint, pre-commit, shellcheck</text>
+  <text x="225" y="373" text-anchor="middle" fill="#bfdbfe" font-size="11">+ azure-cli, kubectl, terraform-ls</text>
+
+  <!-- Right: CI -->
+  <rect x="480" y="60" width="390" height="360" rx="10" fill="#3b0764" stroke="#a855f7" stroke-width="2"/>
+  <text x="675" y="88" text-anchor="middle" fill="#d8b4fe" font-size="15" font-weight="600">CI Pipeline</text>
+
+  <rect x="505" y="105" width="340" height="40" rx="6" fill="#4c1d95"/>
+  <text x="675" y="130" text-anchor="middle" fill="#e9d5ff" font-size="12">1. Pipeline triggers on PR</text>
+
+  <rect x="505" y="155" width="340" height="40" rx="6" fill="#4c1d95"/>
+  <text x="675" y="180" text-anchor="middle" fill="#e9d5ff" font-size="12">2. Check cache (keyed on flake.nix + flake.lock)</text>
+
+  <rect x="505" y="205" width="340" height="40" rx="6" fill="#4c1d95"/>
+  <text x="675" y="230" text-anchor="middle" fill="#e9d5ff" font-size="12">3. nix profile install .#precommit_env</text>
+
+  <rect x="505" y="255" width="340" height="40" rx="6" fill="#4c1d95"/>
+  <text x="675" y="280" text-anchor="middle" fill="#e9d5ff" font-size="12">4. Symlink tools onto $PATH</text>
+
+  <rect x="505" y="310" width="340" height="85" rx="6" fill="#7c3aed"/>
+  <text x="675" y="335" text-anchor="middle" fill="#fff" font-size="13" font-weight="600">Gets: Linters only (faster)</text>
+  <text x="675" y="355" text-anchor="middle" fill="#e9d5ff" font-size="11">terraform, tflint, pre-commit, shellcheck</text>
+  <text x="675" y="373" text-anchor="middle" fill="#e9d5ff" font-size="11">no az cli, no kubectl, no editor tools</text>
+
+  <!-- Center: flake.lock -->
+  <rect x="370" y="195" width="160" height="55" rx="8" fill="#f59e0b" filter="url(#shadow)" stroke="#fbbf24" stroke-width="2"/>
+  <text x="450" y="220" text-anchor="middle" fill="#292524" font-size="14" font-weight="700">flake.lock</text>
+  <text x="450" y="237" text-anchor="middle" fill="#451a03" font-size="10">committed to Git</text>
+
+  <!-- Arrows from flake.lock -->
+  <line x1="395" y1="215" x2="370" y2="215" stroke="#fbbf24" stroke-width="2"/>
+  <line x1="530" y1="215" x2="505" y2="215" stroke="#fbbf24" stroke-width="2"/>
+</svg>
